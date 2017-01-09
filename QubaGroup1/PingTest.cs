@@ -9,7 +9,7 @@ using NUnit;
 
 namespace QubaGroup1
 {
-    public class WebsiteUpTest
+    public class PingTest
     {
         [TestCase("http://shugroupproject1.quba.co.uk/")]
         public void TestCase(string url)
