@@ -10,10 +10,13 @@ using NUnit;
 namespace QubaGroup1
 {
     class Program
-
     {
+        static string URL = "http://shugroupproject1.quba.co.uk/";
         static void Main(string[] args)
         {
+            PingTest ping = new PingTest();
+            CompareFiles CmpFiles = new CompareFiles();
+            ping.TestCase(URL);
         }
         
     }
