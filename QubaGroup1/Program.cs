@@ -25,9 +25,9 @@ namespace QubaGroup1
                 request.AllowAutoRedirect = false; // find out if this site is up and don't follow a redirector
                 request.Method = "HEAD";
 
-                using (var response = request.GetResponse())
+                using (var response = request.GetResponse()) //The website is live
                 {
-                    Console.WriteLine("Website Online.");
+                    Console.WriteLine("print");
                     Console.ReadLine();
                     return true;
                 }
