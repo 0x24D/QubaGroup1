@@ -27,7 +27,7 @@ namespace QubaGroup1
 
                 using (var response = request.GetResponse())
                 {
-                    Console.WriteLine("print");
+                    Console.WriteLine("website online");
                     Console.ReadLine();
                     return true;
                 }
