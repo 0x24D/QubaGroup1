@@ -10,7 +10,7 @@ namespace QubaGroup1
     {
         static void Main(string[] args)
         {
-            
+            hkhkjhk
         }
     }
 }
