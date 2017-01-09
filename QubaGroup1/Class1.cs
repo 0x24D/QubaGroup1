@@ -8,5 +8,6 @@ namespace QubaGroup1
 {
     class Class1
     {
+
     }
 }
