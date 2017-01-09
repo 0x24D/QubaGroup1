@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace QubaGroup1
 {
     class CompareFiles
     {
+
         //Creates a "file" which can tell us the name and it's status in the latest commit.
         public class file
         {
@@ -18,6 +20,16 @@ namespace QubaGroup1
             public ChangeKind State {get; set;}
         }
         List<file> files = new List<file>();
+//        string FileName;
+
+//        CompareFiles(string FileName)
+//        {
+//            this.FileName = FileName;
+//        }
+        CompareFiles()
+        {
+//            FileName = null;
+        }
 
         //check names of "to be deployed" files
         //Probably using files that have been edited/added/deleted recently ie. "today".        
@@ -34,7 +46,7 @@ namespace QubaGroup1
                 foreach (var ptc in patch)
                 {
                     file file = new file();
-                    file.Name = ptc.Path;
+                    file.Name = Path.GetFileName(ptc.Path);
                     file.State = ptc.Status;
                     files.Add(file);
                 }
@@ -43,10 +55,16 @@ namespace QubaGroup1
 
         //find and get files with same name from "live" server
         //compare to files from "to be deployed" area
-        public bool compareFiles(string fileNames, string URL)
+        public void compareTheFiles(string URL, string Repository)
         {
-            getFileNames(URL);
-            return true;
+//            if (FileName == null)
+//            {
+//                getFileNames(Repository);
+//            }
+//            else
+//            {
+
+//            }
         }
 
     }

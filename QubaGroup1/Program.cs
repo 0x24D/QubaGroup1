@@ -12,6 +12,7 @@ namespace QubaGroup1
     class Program
     {
         static string URL = "http://shugroupproject1.quba.co.uk/";
+        static string Repository = "https://quba.svn.beanstalkapp.com/shu-group-project-1/";
         static void Main(string[] args)
         {
             PingTest ping = new PingTest();
