@@ -23,6 +23,7 @@ namespace QubaGroup1
         }
         List<file> files = new List<file>();
         file SpecificFile = new file();
+        List<string> storage = new List<string>();
 
         CompareFiles(string FileName)
         {
@@ -123,16 +124,50 @@ namespace QubaGroup1
                     {
                         //Check that the new file has todays date on uploading.
                         //Or at least (not currently done) check if the new file is newer than it's "to-be-deployed" Therefore being valid.
+
+                        if (DirSearch(filePath, file.Name))
+                        {
+                            //CHECKSUM CHECKS HERE!s
+                            //CHECKSUM CHECKS HERE!
+                            //CHECKSUM CHECKS HERE!
+                            //CHECKSUM CHECKS HERE!
+                            //CHECKSUM CHECKS HERE!
+                            //CHECKSUM CHECKS HERE!
+                        }
+                        else
+                        {
+                            Assert.Fail();//Shouldn't get this, it was modified not deleted.
+                        }
                         
                     }
                     else if (file.State.Equals("Renamed"))
                     {
                         //Check if new file exists
                         //Possibly check if old file was removed? But that would probably be done below.
+
+                        if (DirSearch(filePath, file.Name))
+                        {
+                            //New renamed file found, therefore it was successfully renamed.
+                        }
+                        else
+                        {
+                            Assert.Fail();//File wasn't renamed... Fail.
+                        }
+                        
                     }
                     else if (file.State.Equals("Deleted"))
                     {
                         //Check if file was also deleted on the server.
+
+                        if (!DirSearch(filePath, file.Name))
+                        {
+                            //File was deleted
+                        }
+                        else
+                        {
+                            Assert.Fail(); //File does exist, therefore it wasn't deleted... FAIL.
+                        }
+
                     }
                 }
             }
@@ -141,8 +176,8 @@ namespace QubaGroup1
 //                getSpecificFileDetails(Repository, filePath);
                 try
                 {
-                    string[] storage = Directory.GetFiles(filePath, SpecificFile.Name);
-                    if (storage.Length == 1)
+                    DirSearch(filePath, SpecificFile.Name);
+                    if (storage.Count == 1)
                     {
                         //means we've got our file.
                         DateTime dateLastWritten = System.IO.File.GetLastWriteTime(filePath);
@@ -172,23 +207,26 @@ namespace QubaGroup1
                 }
             }
         }
-        private void DirSearch(string sDir, string fileName)
+        private bool DirSearch(string sDir, string fileName)
         {
+            bool found = false;
             try
             {
                 foreach (string d in Directory.GetDirectories(sDir))
                 {
-                    foreach (string f in Directory.GetFiles(d, txtFile.Text))
+                    foreach (string f in Directory.GetFiles(d, fileName))
                     {
-                        lstFilesFound.Items.Add(f);
+                        storage.Add(f);
+                        found = true;
                     }
-                    DirSearch(d);
+                    DirSearch(d, fileName);
                 }
             }
-            catch (System.Exception excpt)
+            catch (System.Exception)
             {
-                Console.WriteLine(excpt.Message);
+                return found;
             }
+            return found;
         }
     }
 }

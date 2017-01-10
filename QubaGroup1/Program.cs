@@ -16,17 +16,14 @@ namespace QubaGroup1
         static string URL2 = "http://shugroupproject1.quba.co.uk/product"; // --  needs to changing so it not hard coded
 
         static string Repository = "https://quba.svn.beanstalkapp.com/shu-group-project-1/";
-        static string filePath;
+        //currently being tested, just comment it out if it causes issues.
+        static string filePath = @"F:\MyWork\Test";//Directory.GetCurrentDirectory();
         static void Main(string[] args)
         {
             PingTest ping = new PingTest();
             CompareFiles CmpFiles = new CompareFiles();
-            CheckLinks check = new CheckLinks(); // added this into PingTest however i am unsure of the potenial uses for it 
-
             ping.TestCase(URL1);
-            check.TestCase(URL2);
-            CmpFiles.getFileDetails(Repository, filePath);
-           
+            CmpFiles.compareTheFiles(URL1, Repository, filePath);
         }
         
     }
