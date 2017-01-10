@@ -42,7 +42,7 @@ namespace QubaGroup1
             string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
             try
             {
-                CloneOptions co = new CloneOptions();
+                CloneOptions co = new CloneOptions { BranchName = "trunk", Checkout = true };
                 co.CredentialsProvider = (_url, _user, _cred) =>
                 new UsernamePasswordCredentials { Username = User, Password = Pass };
 
@@ -53,46 +53,27 @@ namespace QubaGroup1
 
                     var patch = repo.Diff.Compare<Patch>(parentCommitTree, commitTree); // Difference
 
-                    foreach (var ptc in patch)
+                    if (SpecificFile.Name != null)
                     {
-                        file file = new file();
-                        file.Name = Path.GetFileName(ptc.Path);
-                        file.State = ptc.Status;
-                        files.Add(file);
-                    }
-                }
-            }
-            catch
-            {
-                Assert.Fail();
-            }
-        }
-
-        private void getSpecificFileDetails(string Repos, string filePath)
-        {
-            string User = "b5010811";
-            string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
-            try
-            {
-                CloneOptions co = new CloneOptions();
-                co.CredentialsProvider = (_url, _user, _cred) =>
-                new UsernamePasswordCredentials { Username = User, Password = Pass };
-
-                using (Repository repo = new Repository(Repository.Clone(Repos, filePath, co)))
-                {
-                    Tree commitTree = repo.Head.Tip.Tree; // Main Tree
-                    Tree parentCommitTree = repo.Head.Tip.Parents.Single().Tree; // Secondary Tree
-
-                    var patch = repo.Diff.Compare<Patch>(parentCommitTree, commitTree); // Difference
-
-                    foreach (var ptc in patch)
-                    {
-                        file file = new file();
-                        file.Name = Path.GetFileName(ptc.Path);
-                        if (file.Name.Equals(SpecificFile.Name))
+                        foreach (var ptc in patch)
                         {
-                            SpecificFile.State = ptc.Status;
-//                            SpecificFile.LastModified;
+                            file file = new file();
+                            file.Name = Path.GetFileName(ptc.Path);
+                            file.State = ptc.Status;
+                            files.Add(file);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var ptc in patch)
+                        {
+                            file file = new file();
+                            file.Name = Path.GetFileName(ptc.Path);
+                            if (file.Name.Equals(SpecificFile.Name))
+                            {
+                                SpecificFile.State = ptc.Status;
+                                //SpecificFile.LastModified;
+                            }
                         }
                     }
                 }
@@ -117,7 +98,7 @@ namespace QubaGroup1
 
             if (SpecificFile.Name == null)
             {
-//                getFileDetails(Repository, filePath);
+                //getFileDetails(Repository, filePath);
                 foreach (file file in files)
                 {
                     if (file.State.Equals("Modified"))
@@ -173,7 +154,7 @@ namespace QubaGroup1
             }
             else
             {
-//                getSpecificFileDetails(Repository, filePath);
+                //getFileDetails(Repository, filePath);
                 try
                 {
                     DirSearch(filePath, SpecificFile.Name);
