@@ -20,7 +20,7 @@ namespace QubaGroup1
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(url1);
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url1);
                 request.Timeout = 3000;
                 request.AllowAutoRedirect = false; // find out if this site is up and don't follow a redirector
                 request.Method = "HEAD";
