@@ -22,7 +22,7 @@ namespace QubaGroup1
             public DateTime LastModified {get;set;}
         }
         List<file> files = new List<file>();
-        file SpecificFile;
+        file SpecificFile = new file();
 
         CompareFiles(string FileName)
         {
@@ -39,7 +39,6 @@ namespace QubaGroup1
         {
             string User = "b5010811";
             string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
-            filePath = @"F:\MyWork\Test";//Directory.GetCurrentDirectory();
             try
             {
                 CloneOptions co = new CloneOptions();
@@ -63,31 +62,68 @@ namespace QubaGroup1
                 }
             }
             catch
-            {   
-
+            {
+                Assert.Fail();
             }
         }
 
         private void getSpecificFileDetails(string Repos, string filePath)
         {
+            string User = "b5010811";
+            string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
+            try
+            {
+                CloneOptions co = new CloneOptions();
+                co.CredentialsProvider = (_url, _user, _cred) =>
+                new UsernamePasswordCredentials { Username = User, Password = Pass };
 
+                using (Repository repo = new Repository(Repository.Clone(Repos, filePath, co)))
+                {
+                    Tree commitTree = repo.Head.Tip.Tree; // Main Tree
+                    Tree parentCommitTree = repo.Head.Tip.Parents.Single().Tree; // Secondary Tree
+
+                    var patch = repo.Diff.Compare<Patch>(parentCommitTree, commitTree); // Difference
+
+                    foreach (var ptc in patch)
+                    {
+                        file file = new file();
+                        file.Name = Path.GetFileName(ptc.Path);
+                        if (file.Name.Equals(SpecificFile.Name))
+                        {
+                            SpecificFile.State = ptc.Status;
+//                            SpecificFile.LastModified;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                Assert.Fail();
+            }
         }
 
         //find and get files with same name from "live" server
         //compare to files from "to be deployed" area
+        [TestCase("http://shugroupproject1.quba.co.uk/", "")]
         public void compareTheFiles(string URL, string Repository, string filePath)
         {
             DateTime Now = DateTime.Now;
 
+            SpecificFile.Name = "Test.cs";
+            SpecificFile.State = ChangeKind.Modified;
+            SpecificFile.LastModified = new DateTime(2016,12,22);
+
+
             if (SpecificFile.Name == null)
             {
-                getFileDetails(Repository, filePath);
+//                getFileDetails(Repository, filePath);
                 foreach (file file in files)
                 {
                     if (file.State.Equals("Modified"))
                     {
                         //Check that the new file has todays date on uploading.
                         //Or at least (not currently done) check if the new file is newer than it's "to-be-deployed" Therefore being valid.
+                        
                     }
                     else if (file.State.Equals("Renamed"))
                     {
@@ -102,7 +138,7 @@ namespace QubaGroup1
             }
             else
             {
-                getSpecificFileDetails(Repository, filePath);
+//                getSpecificFileDetails(Repository, filePath);
                 try
                 {
                     string[] storage = Directory.GetFiles(filePath, SpecificFile.Name);
@@ -114,16 +150,18 @@ namespace QubaGroup1
                             | SpecificFile.State.Equals("Renamed"))) | dateLastWritten.Date>SpecificFile.LastModified)
                         {
                             //Its all good, what do we do now?
+                            Console.WriteLine("It worked.");  
                         }
                         else
                         {
                             Assert.Fail();
                         }
                     }
-                    else if (storage.Length >= 2)
+                    else
                     {
-                        //Means it returned multiple files with the same filename
+                        //Means it returned multiple files with the same filename.
                         //Which, if filetype is included correctly, shouldn't happen.
+                        //Or it doesn't exist.
                         Assert.Fail();
                     }
                 }
