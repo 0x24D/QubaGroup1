@@ -146,8 +146,8 @@ namespace QubaGroup1
                     {
                         //means we've got our file.
                         DateTime dateLastWritten = System.IO.File.GetLastWriteTime(filePath);
-                        if ((dateLastWritten.Date.Equals(Now.Date) && (SpecificFile.State.Equals("Modified")
-                            | SpecificFile.State.Equals("Renamed"))) | dateLastWritten.Date>SpecificFile.LastModified)
+                        if ((DateTime.Compare(dateLastWritten, SpecificFile.LastModified)>=0) &&
+                            (SpecificFile.State == ChangeKind.Modified | SpecificFile.State == ChangeKind.Renamed))
                         {
                             //Its all good, what do we do now?
                             Console.WriteLine("It worked.");  
@@ -172,6 +172,23 @@ namespace QubaGroup1
                 }
             }
         }
-
+        private void DirSearch(string sDir, string fileName)
+        {
+            try
+            {
+                foreach (string d in Directory.GetDirectories(sDir))
+                {
+                    foreach (string f in Directory.GetFiles(d, txtFile.Text))
+                    {
+                        lstFilesFound.Items.Add(f);
+                    }
+                    DirSearch(d);
+                }
+            }
+            catch (System.Exception excpt)
+            {
+                Console.WriteLine(excpt.Message);
+            }
+        }
     }
 }
