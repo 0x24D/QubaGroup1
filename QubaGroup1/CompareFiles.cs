@@ -93,11 +93,11 @@ namespace QubaGroup1
                 using (Repository repo = new Repository(Repository.Clone(Repos, filePath, co)))
                 {
 
-                    Tree commitTree = repo.Head.Tip.Tree; // Main Tree
+//                    Tree commitTree = repo.Head.Tip.Tree; // Main Tree
 
-                    file.State = ptc.Status;
-                    file.LastModified = DateTime.Now;
-                    files.Add(file);
+//                    file.State = ptc.Status;
+//                    file.LastModified = DateTime.Now;
+//                    files.Add(file);
                 }
             }
             catch
@@ -191,7 +191,16 @@ namespace QubaGroup1
                             (SpecificFile.State == ChangeKind.Modified | SpecificFile.State == ChangeKind.Renamed))
                         {
                             //Its all good, what do we do now?
-                            Console.WriteLine("It worked.");  
+
+                            Console.WriteLine("It worked.");
+
+                            //CHECKSUM CHECKS HERE!
+                            //CHECKSUM CHECKS HERE!
+                            //CHECKSUM CHECKS HERE!
+                            //CHECKSUM CHECKS HERE!
+                            //CHECKSUM CHECKS HERE!
+                            //CHECKSUM CHECKS HERE!
+
                         }
                         else
                         {
