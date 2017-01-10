@@ -74,7 +74,7 @@ namespace QubaGroup1
 
                         using (var response = request.GetResponse())
                         {
-                            Console.WriteLine(links[i]);
+                            Console.WriteLine(links[i] + " connected");
                             Console.ReadLine();
                         }
                 }
