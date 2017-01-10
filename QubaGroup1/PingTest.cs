@@ -46,10 +46,10 @@ namespace QubaGroup1
         List<string> links = new List<string>();
 
         [TestCase("http://shugroupproject1.quba.co.uk")]
-        public void TestCase(string url1)
+        public void TestCase(string url2)
         {
             HtmlWeb hw = new HtmlWeb();
-            HtmlDocument doc = hw.Load("http://shugroupproject1.quba.co.uk/");
+            HtmlDocument doc = hw.Load(url2);
             foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
             {
                 string hrefValue = link.GetAttributeValue("href", string.Empty);
