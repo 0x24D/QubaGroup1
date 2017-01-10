@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LibGit2Sharp;
+using LibGit2Sharp; //Allows us to read the beanstalk git files
 using NUnit.Framework;
 using NUnit;
 
@@ -20,32 +21,32 @@ namespace QubaGroup1
             public ChangeKind State {get; set;}
         }
         List<file> files = new List<file>();
-//        string FileName;
+        string FileName;
 
-//        CompareFiles(string FileName)
-//        {
-//            this.FileName = FileName;
-//        }
+        CompareFiles(string FileName)
+        {
+            this.FileName = FileName;
+        }
         public CompareFiles()
         {
-//            FileName = null;
+            FileName = null;
         }
 
         //check names of "to be deployed" files
-        //Probably using files that have been edited/added/deleted recently ie. "today".        
+        //Probably using files that have been edited/added/deleted recently ie. today.        
         //[TestCase("")]
-        public void getFileDetails(string Repos, string WorkEnvironment)
+        public void getFileDetails(string Repos, string filePath)
         {
             string User = "b5010811";
             string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
-            WorkEnvironment = @"F:\MyWork\Test";//Directory.GetCurrentDirectory();
+            filePath = @"F:\MyWork\Test";//Directory.GetCurrentDirectory();
             try
             {
                 CloneOptions co = new CloneOptions();
                 co.CredentialsProvider = (_url, _user, _cred) =>
                 new UsernamePasswordCredentials { Username = User, Password = Pass };
 
-                using (Repository repo = new Repository(Repository.Clone(Repos, WorkEnvironment,co)))
+                using (Repository repo = new Repository(Repository.Clone(Repos, filePath, co)))
                 {
                     Tree commitTree = repo.Head.Tip.Tree; // Main Tree
                     Tree parentCommitTree = repo.Head.Tip.Parents.Single().Tree; // Secondary Tree
@@ -69,22 +70,57 @@ namespace QubaGroup1
 
         //find and get files with same name from "live" server
         //compare to files from "to be deployed" area
-        public void compareTheFiles(string URL, string Repository)
+        public void compareTheFiles(string URL, string Repository, string filePath)
         {
-//            if (FileName == null)
-//            {
-//            getFileDetails(Repository);
-//            foreach (file file in files)
- //           {
- //               if ()
-  //              {
+            DateTime Now = DateTime.Now;
+            
 
-  //              }
- //           }
-//            }
-//            else
-//            {
-//            }
+            if (FileName == null)
+            {
+                getFileDetails(Repository, filePath);
+                foreach (file file in files)
+                {
+                    if (file.State.Equals("Modified"))
+                    {
+                        //Check that the new file has todays date on uploading.
+                        //Or at least (not currently done) check if the new file is newer than it's "to-be-deployed" Therefore being valid.
+                    }
+                    else if (file.State.Equals("Renamed"))
+                    {
+                        //Check if new file exists
+                        //Possibly check if old file was removed? But that would probably be done below.
+                    }
+                    else if (file.State.Equals("Deleted"))
+                    {
+                        //Check if file was also deleted on the server.
+                    }
+                }
+            }
+            else
+            {
+                try
+                {
+                    string[] storage = Directory.GetFiles(filePath, FileName);
+                    if (storage.Length == 1)
+                    {
+                        //means we've got our file.
+                    }
+                    else if (storage >= 2)
+                    {
+                        //Means it returned multiple files with the same filename or including it in their title.
+                    }
+                    else if (storage == 0)
+                    {
+                        //File does not exist
+                        Assert.Fail();
+                    }
+                }
+                catch
+                {
+                    //File (as entered by user) does not exist.
+                    Assert.Fail();
+                }
+            }
         }
 
     }
