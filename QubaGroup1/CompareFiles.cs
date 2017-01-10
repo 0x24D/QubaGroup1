@@ -40,9 +40,13 @@ namespace QubaGroup1
         {
             string User = "b5010811";
             string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
+
+            string tempClonePath = filePath + @"\tempClone";
+            System.IO.Directory.CreateDirectory(tempClonePath);
+
             try
             {
-                CloneOptions co = new CloneOptions { BranchName = "trunk", Checkout = true };
+                CloneOptions co = new CloneOptions();
                 co.CredentialsProvider = (_url, _user, _cred) =>
                 new UsernamePasswordCredentials { Username = User, Password = Pass };
 
@@ -53,36 +57,58 @@ namespace QubaGroup1
 
                     var patch = repo.Diff.Compare<Patch>(parentCommitTree, commitTree); // Difference
 
-                    if (SpecificFile.Name != null)
+                    foreach (var ptc in patch)
                     {
-                        foreach (var ptc in patch)
-                        {
-                            file file = new file();
-                            file.Name = Path.GetFileName(ptc.Path);
-                            file.State = ptc.Status;
-                            files.Add(file);
-                        }
-                    }
-                    else
-                    {
-                        foreach (var ptc in patch)
-                        {
-                            file file = new file();
-                            file.Name = Path.GetFileName(ptc.Path);
-                            if (file.Name.Equals(SpecificFile.Name))
-                            {
-                                SpecificFile.State = ptc.Status;
-                                //SpecificFile.LastModified;
-                            }
-                        }
-                    }
+                         file file = new file();
+                         file.Name = Path.GetFileName(ptc.Path);
+                         file.State = ptc.Status;
+                         file.LastModified = DateTime.Now;
+                         files.Add(file);
+                     }
                 }
             }
             catch
             {
+                Directory.Delete(tempClonePath, true);
                 Assert.Fail();
             }
+
+            Directory.Delete(tempClonePath, true);
         }
+
+        private void getSpecificFileDetails(string Repos, string filePath)
+        {
+            string User = "b5010811";
+            string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
+
+            string tempClonePath = filePath + @"\tempClone";
+            System.IO.Directory.CreateDirectory(tempClonePath);
+
+            try
+            {
+                CloneOptions co = new CloneOptions();
+                co.CredentialsProvider = (_url, _user, _cred) =>
+                new UsernamePasswordCredentials { Username = User, Password = Pass };
+
+                using (Repository repo = new Repository(Repository.Clone(Repos, filePath, co)))
+                {
+
+                    Tree commitTree = repo.Head.Tip.Tree; // Main Tree
+
+                    file.State = ptc.Status;
+                    file.LastModified = DateTime.Now;
+                    files.Add(file);
+                }
+            }
+            catch
+            {
+                Directory.Delete(tempClonePath, true);
+                Assert.Fail();
+            }
+
+            Directory.Delete(tempClonePath, true);
+        }
+
 
         //find and get files with same name from "live" server
         //compare to files from "to be deployed" area
@@ -101,14 +127,14 @@ namespace QubaGroup1
                 //getFileDetails(Repository, filePath);
                 foreach (file file in files)
                 {
-                    if (file.State.Equals("Modified"))
+                    if (file.State == ChangeKind.Modified)
                     {
                         //Check that the new file has todays date on uploading.
                         //Or at least (not currently done) check if the new file is newer than it's "to-be-deployed" Therefore being valid.
 
                         if (DirSearch(filePath, file.Name))
                         {
-                            //CHECKSUM CHECKS HERE!s
+                            //CHECKSUM CHECKS HERE!
                             //CHECKSUM CHECKS HERE!
                             //CHECKSUM CHECKS HERE!
                             //CHECKSUM CHECKS HERE!
@@ -121,22 +147,21 @@ namespace QubaGroup1
                         }
                         
                     }
-                    else if (file.State.Equals("Renamed"))
+                    else if (file.State == ChangeKind.Renamed | file.State == ChangeKind.Added)
                     {
                         //Check if new file exists
-                        //Possibly check if old file was removed? But that would probably be done below.
-
+                        //Renamed - Possibly check if old file was removed? But would that probably be done below?
                         if (DirSearch(filePath, file.Name))
                         {
-                            //New renamed file found, therefore it was successfully renamed.
+                            //New renamed/added file found, therefore it was successfully renamed.
                         }
                         else
                         {
-                            Assert.Fail();//File wasn't renamed... Fail.
+                            Assert.Fail();//File wasn't renamed or added... Fail.
                         }
                         
                     }
-                    else if (file.State.Equals("Deleted"))
+                    else if (file.State == ChangeKind.Deleted)
                     {
                         //Check if file was also deleted on the server.
 
