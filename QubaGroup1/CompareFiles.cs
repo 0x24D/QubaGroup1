@@ -19,17 +19,17 @@ namespace QubaGroup1
         {
             public string Name {get; set;}
             public ChangeKind State {get; set;}
+            public DateTime LastModified {get;set;}
         }
         List<file> files = new List<file>();
-        string FileName;
+        file SpecificFile;
 
         CompareFiles(string FileName)
         {
-            this.FileName = FileName;
+            this.SpecificFile.Name = FileName;
         }
         public CompareFiles()
         {
-            FileName = null;
         }
 
         //check names of "to be deployed" files
@@ -68,14 +68,18 @@ namespace QubaGroup1
             }
         }
 
+        private void getSpecificFileDetails(string Repos, string filePath)
+        {
+
+        }
+
         //find and get files with same name from "live" server
         //compare to files from "to be deployed" area
         public void compareTheFiles(string URL, string Repository, string filePath)
         {
             DateTime Now = DateTime.Now;
-            
 
-            if (FileName == null)
+            if (SpecificFile.Name == null)
             {
                 getFileDetails(Repository, filePath);
                 foreach (file file in files)
@@ -98,20 +102,28 @@ namespace QubaGroup1
             }
             else
             {
+                getSpecificFileDetails(Repository, filePath);
                 try
                 {
-                    string[] storage = Directory.GetFiles(filePath, FileName);
+                    string[] storage = Directory.GetFiles(filePath, SpecificFile.Name);
                     if (storage.Length == 1)
                     {
                         //means we've got our file.
+                        DateTime dateLastWritten = System.IO.File.GetLastWriteTime(filePath);
+                        if ((dateLastWritten.Date.Equals(Now.Date) && (SpecificFile.State.Equals("Modified")
+                            | SpecificFile.State.Equals("Renamed"))) | dateLastWritten.Date>SpecificFile.LastModified)
+                        {
+                            //Its all good, what do we do now?
+                        }
+                        else
+                        {
+                            Assert.Fail();
+                        }
                     }
-                    else if (storage >= 2)
+                    else if (storage.Length >= 2)
                     {
-                        //Means it returned multiple files with the same filename or including it in their title.
-                    }
-                    else if (storage == 0)
-                    {
-                        //File does not exist
+                        //Means it returned multiple files with the same filename
+                        //Which, if filetype is included correctly, shouldn't happen.
                         Assert.Fail();
                     }
                 }
