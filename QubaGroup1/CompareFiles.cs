@@ -88,7 +88,7 @@ namespace QubaGroup1
             {
                 CloneOptions co = new CloneOptions();
                 co.CredentialsProvider = (_url, _user, _cred) =>
-                new UsernamePasswordCredentials { Username = User, Password = Pass };
+                new DefaultCredentials();
 
                 using (Repository repo = new Repository(Repository.Clone(Repos, filePath, co)))
                 {
