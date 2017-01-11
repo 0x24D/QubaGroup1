@@ -24,10 +24,12 @@ namespace QubaGroup1
         {
             PingTest ping = new PingTest();
             CompareFiles CmpFiles = new CompareFiles();
-            CheckLinks check = new CheckLinks(); // added this into PingTest however i am unsure of the potenial uses for it 
+            LinkTest check = new LinkTest(); // added this into PingTest however i am unsure of the potenial uses for it 
 
             ping.TestCase(URL1);
             check.TestCase(URL2);
+
+            Console.ReadLine();
 
             CmpFiles.getFileDetails(Repository, filePath);
             CmpFiles.compareTheFiles(URL1, Repository, filePath);
