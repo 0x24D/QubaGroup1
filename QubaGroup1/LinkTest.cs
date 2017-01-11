@@ -33,7 +33,7 @@ namespace QubaGroup1
             {
                 Console.WriteLine(links[i]);
             }
-
+            Console.WriteLine("");
             ////////////////////////////////////ping each hyperlink
             for (int i = 0; i < links.Count; i++)
             {
@@ -51,7 +51,7 @@ namespace QubaGroup1
                 }
                 catch
                 {
-                    Console.WriteLine("failed");
+                    Console.WriteLine(links[i] + " failed");
                 }
             }
         }

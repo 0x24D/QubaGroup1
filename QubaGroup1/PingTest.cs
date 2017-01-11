@@ -28,12 +28,13 @@ namespace QubaGroup1
                 using (var response = request.GetResponse())
                 {
                     Console.WriteLine("working --  Shugroupproject1.quba.co.uk is online");
+                    Console.WriteLine("");
                 }
 
             }
             catch
             {
-
+                Console.WriteLine("Failed to connect");
             }
 
         }
