@@ -125,6 +125,8 @@ namespace QubaGroup1
 
                     // output is: 49781a0  Blame: minor cleanup
 //                    Console.WriteLine("{0}  {1}", commit.Sha.Substring(0, 7), commit.MessageShort);
+
+                    SpecificFile.LastModified = ConvertFromDateTimeOffset(commit.Committer.When);
                 }
             }
             catch
@@ -270,6 +272,15 @@ namespace QubaGroup1
                 return found;
             }
             return found;
+        }
+        private DateTime ConvertFromDateTimeOffset(DateTimeOffset dateTime)
+        {
+            if (dateTime.Offset.Equals(TimeSpan.Zero))
+                return dateTime.UtcDateTime;
+            else if (dateTime.Offset.Equals(TimeZoneInfo.Local.GetUtcOffset(dateTime.DateTime)))
+                return DateTime.SpecifyKind(dateTime.DateTime, DateTimeKind.Local);
+            else
+                return dateTime.DateTime;
         }
 
         public string CalculateMd5Hash(string input)
