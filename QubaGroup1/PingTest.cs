@@ -28,63 +28,14 @@ namespace QubaGroup1
                 using (var response = request.GetResponse())
                 {
                     Console.WriteLine("working --  Shugroupproject1.quba.co.uk is online");
-                    Console.ReadLine();
                 }
 
             }
             catch
             {
-                Console.WriteLine("failed --  Shugroupproject1.quba.co.uk is not online");
-                Console.ReadLine();
+
             }
 
-        }
-    }
-
-    public class CheckLinks
-    {
-        List<string> links = new List<string>();
-
-        [TestCase("http://shugroupproject1.quba.co.uk")]
-        public void TestCase(string url2)
-        {
-            HtmlWeb hw = new HtmlWeb();
-            HtmlDocument doc = hw.Load(url2);
-            foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
-            {
-                string hrefValue = link.GetAttributeValue("href", string.Empty);
-                links.Add(hrefValue);
-            }
-            for (int i = 0; i < links.Count; i++)
-            {
-                Console.WriteLine(links[i]);
-            }
-            Console.ReadLine();
-
-            ////////////////////////////////////ping each hyperlink
-            for (int i = 0; i < links.Count; i++)
-            {
-                
-                try
-                {
-                        HttpWebRequest request = WebRequest.Create(links[i]) as HttpWebRequest;
-                        request.Timeout = 3000;
-                        request.AllowAutoRedirect = true; // find out if this site is up and don't follow a redirector
-                        request.Method = "HEAD";
-
-                        using (var response = request.GetResponse())
-                        {
-                            Console.WriteLine(links[i] + " connected");
-                            Console.ReadLine();
-                        }
-                }
-                catch
-                {
-                    Console.WriteLine("failed");
-                    Console.ReadLine();
-                }
-            }
-            ////////////////////////////////////
         }
     }
 }
