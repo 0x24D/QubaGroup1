@@ -19,21 +19,25 @@ namespace QubaGroup1
         [TestCase("http://shugroupproject1.quba.co.uk")]
         public void TestCase(string url2)
         {
-            int j = 0;
             HtmlWeb hw = new HtmlWeb();
             HtmlDocument doc = hw.Load(url2);
+            int j = 0;
             foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
             {
+
                 string hrefValue = link.GetAttributeValue("href", string.Empty);
                 links.Add(hrefValue);
                 j++;
-                Console.WriteLine(j + "Link(s) found");
+                Console.WriteLine(j + " Link(s) found");
+                
             }
+            Console.WriteLine("");
             for (int i = 0; i < links.Count; i++)
             {
                 Console.WriteLine(links[i]);
+                
             }
-
+            Console.WriteLine("");
             ////////////////////////////////////ping each hyperlink
             for (int i = 0; i < links.Count; i++)
             {
@@ -43,7 +47,6 @@ namespace QubaGroup1
                         request.Timeout = 3000;
                         request.AllowAutoRedirect = true; // find out if this site is up and don't follow a redirector
                         request.Method = "HEAD";
-
                         using (var response = request.GetResponse())
                         {
                             Console.WriteLine(links[i] + " connected");
@@ -51,7 +54,7 @@ namespace QubaGroup1
                 }
                 catch
                 {
-                    Console.WriteLine("failed");
+                    Console.WriteLine(links[i] + " failed");
                 }
             }
         }
