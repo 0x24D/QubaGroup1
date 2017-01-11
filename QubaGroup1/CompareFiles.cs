@@ -51,9 +51,9 @@ namespace QubaGroup1
             {
                 CloneOptions co = new CloneOptions();
                 co.CredentialsProvider = (_url, _user, _cred) =>
-                    new UsernamePasswordCredentials {Username = User, Password = Pass};
+                new UsernamePasswordCredentials {Username = User, Password = Pass};
 
-                using (Repository repo = new Repository(Repository.Clone(Repos, filePath, co)))
+                using (Repository repo = new Repository(Repository.Clone(Repos, tempClonePath, co)))
                 {
                     Tree commitTree = repo.Head.Tip.Tree; // Main Tree
                     Tree parentCommitTree = repo.Head.Tip.Parents.Single().Tree; // Secondary Tree
@@ -93,14 +93,38 @@ namespace QubaGroup1
                 co.CredentialsProvider = (_url, _user, _cred) =>
                     new DefaultCredentials();
 
-                using (Repository repo = new Repository(Repository.Clone(Repos, filePath, co)))
+                using (Repository repo = new Repository(Repository.Clone(Repos, tempClonePath, co)))
                 {
+                    //May find the last commit of a file NEEDS TESTING ONCE CLONING WORKS
+                    var path = tempClonePath + @"\" + SpecificFile.Name;
+                    var commit = repo.Head.Tip;
+                    var gitObj = commit[path].Target;
+                    
+                    var set = new HashSet<string>();
+                    var queue = new Queue<Commit>();
+                    queue.Enqueue(commit);
+                    set.Add(commit.Sha);
+                    
+                    while (queue.Count > 0)
+                    {
+                        commit = queue.Dequeue();
+                        var go = false;
+                        foreach (var parent in commit.Parents)
+                        {
+                            var tree = parent[path];
+                            if (tree == null)
+                                continue;
+                                var eq = tree.Target.Sha == gitObj.Sha;
+                                if (eq && set.Add(parent.Sha))
+                                    queue.Enqueue(parent);
+                                go = go || eq;
+                        }
+                        if (!go)
+                           break;
+                    }
 
-//                    Tree commitTree = repo.Head.Tip.Tree; // Main Tree
-
-//                    file.State = ptc.Status;
-//                    file.LastModified = DateTime.Now;
-//                    files.Add(file);
+                    // output is: 49781a0  Blame: minor cleanup
+//                    Console.WriteLine("{0}  {1}", commit.Sha.Substring(0, 7), commit.MessageShort);
                 }
             }
             catch
