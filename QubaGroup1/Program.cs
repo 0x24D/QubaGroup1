@@ -26,16 +26,27 @@ namespace QubaGroup1
         static void Main(string[] args)
         {
             PingTest ping = new PingTest();
-            CompareFiles CmpFiles = new CompareFiles();
+            CompareFiles cmpFiles = new CompareFiles();
             LinkTest check = new LinkTest(); // added this into PingTest however i am unsure of the potenial uses for it 
 
             ping.TestCase(URL1);
             check.TestCase(URL2);
 
-            Console.ReadLine();
+           
 
-            CmpFiles.getFileDetails(Repository, filePath);
-            CmpFiles.compareTheFiles(URL1, Repository, filePath);
+            //CmpFiles.getFileDetails(Repository, filePath);
+            //CmpFiles.compareTheFiles(URL1, Repository, filePath);
+            string sum1 = cmpFiles.CalculateMd5Hash("C:\\Users\\b5021991\\Desktop\\Test.txt");
+            string sum2 = cmpFiles.CalculateMd5Hash("C:\\Users\\b5021991\\Desktop\\Test2.txt");
+            if (sum1.Equals(sum2))
+            {
+                Console.WriteLine("MD5sums match");
+            }
+            else
+            {
+                Console.WriteLine("MD5sums do not match");
+            }
+            Console.ReadLine();
         }
         
     }

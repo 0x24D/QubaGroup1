@@ -3,6 +3,7 @@ using System.IO;
 using System.Web;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using LibGit2Sharp; //Allows us to read the beanstalk git files
@@ -17,10 +18,11 @@ namespace QubaGroup1
         //Creates a "file" which can tell us the name and it's status in the latest commit.
         public class file
         {
-            public string Name {get; set;}
-            public ChangeKind State {get; set;}
-            public DateTime LastModified {get;set;}
+            public string Name { get; set; }
+            public ChangeKind State { get; set; }
+            public DateTime LastModified { get; set; }
         }
+
         List<file> files = new List<file>();
         file SpecificFile = new file();
         List<string> storage = new List<string>();
@@ -29,6 +31,7 @@ namespace QubaGroup1
         {
             this.SpecificFile.Name = FileName;
         }
+
         public CompareFiles()
         {
         }
@@ -48,7 +51,7 @@ namespace QubaGroup1
             {
                 CloneOptions co = new CloneOptions();
                 co.CredentialsProvider = (_url, _user, _cred) =>
-                new UsernamePasswordCredentials { Username = User, Password = Pass };
+                    new UsernamePasswordCredentials {Username = User, Password = Pass};
 
                 using (Repository repo = new Repository(Repository.Clone(Repos, filePath, co)))
                 {
@@ -59,12 +62,12 @@ namespace QubaGroup1
 
                     foreach (var ptc in patch)
                     {
-                         file file = new file();
-                         file.Name = Path.GetFileName(ptc.Path);
-                         file.State = ptc.Status;
-                         file.LastModified = DateTime.Now;
-                         files.Add(file);
-                     }
+                        file file = new file();
+                        file.Name = Path.GetFileName(ptc.Path);
+                        file.State = ptc.Status;
+                        file.LastModified = DateTime.Now;
+                        files.Add(file);
+                    }
                 }
             }
             catch
@@ -88,7 +91,7 @@ namespace QubaGroup1
             {
                 CloneOptions co = new CloneOptions();
                 co.CredentialsProvider = (_url, _user, _cred) =>
-                new DefaultCredentials();
+                    new DefaultCredentials();
 
                 using (Repository repo = new Repository(Repository.Clone(Repos, filePath, co)))
                 {
@@ -119,7 +122,7 @@ namespace QubaGroup1
 
             SpecificFile.Name = "Test.cs";
             SpecificFile.State = ChangeKind.Modified;
-            SpecificFile.LastModified = new DateTime(2016,12,22);
+            SpecificFile.LastModified = new DateTime(2016, 12, 22);
 
 
             if (SpecificFile.Name == null)
@@ -143,9 +146,9 @@ namespace QubaGroup1
                         }
                         else
                         {
-                            Assert.Fail();//Shouldn't get this, it was modified not deleted.
+                            Assert.Fail(); //Shouldn't get this, it was modified not deleted.
                         }
-                        
+
                     }
                     else if (file.State == ChangeKind.Renamed | file.State == ChangeKind.Added)
                     {
@@ -157,9 +160,9 @@ namespace QubaGroup1
                         }
                         else
                         {
-                            Assert.Fail();//File wasn't renamed or added... Fail.
+                            Assert.Fail(); //File wasn't renamed or added... Fail.
                         }
-                        
+
                     }
                     else if (file.State == ChangeKind.Deleted)
                     {
@@ -187,7 +190,7 @@ namespace QubaGroup1
                     {
                         //means we've got our file.
                         DateTime dateLastWritten = System.IO.File.GetLastWriteTime(filePath);
-                        if ((DateTime.Compare(dateLastWritten, SpecificFile.LastModified)>=0) &&
+                        if ((DateTime.Compare(dateLastWritten, SpecificFile.LastModified) >= 0) &&
                             (SpecificFile.State == ChangeKind.Modified | SpecificFile.State == ChangeKind.Renamed))
                         {
                             //Its all good, what do we do now?
@@ -222,6 +225,7 @@ namespace QubaGroup1
                 }
             }
         }
+
         private bool DirSearch(string sDir, string fileName)
         {
             bool found = false;
@@ -242,6 +246,19 @@ namespace QubaGroup1
                 return found;
             }
             return found;
+        }
+
+        public string CalculateMd5Hash(string input)
+        {
+            string md5Sum;
+            // step 1, calculate MD5 hash from input
+            MD5 md5 = System.Security.Cryptography.MD5.Create();
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+            byte[] hash = md5.ComputeHash(inputBytes);
+            // step 2, convert byte array to hex string
+            StringBuilder sb = new StringBuilder();
+            md5Sum = System.Text.Encoding.UTF8.GetString(hash);
+            return md5Sum;
         }
     }
 }

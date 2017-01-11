@@ -27,7 +27,7 @@ namespace QubaGroup1
                 string hrefValue = link.GetAttributeValue("href", string.Empty);
                 links.Add(hrefValue);
                 j++;
-                Console.WriteLine(j + "Link(s) found");
+                Console.WriteLine(j + " Link(s) found");
             }
             for (int i = 0; i < links.Count; i++)
             {
