@@ -31,7 +31,7 @@ namespace QubaGroup1
             p.Ping(URL1);
             check.TestCase(URL2);
 //            cmpFiles.getFileDetails(Repository, filePath);
-            cmpFiles.compareTheFiles(URL1, Repository, filePath);
+//            cmpFiles.compareTheFiles(URL1, Repository, filePath);
             string sum1 = cmpFiles.CalculateMd5Hash("C:\\Users\\b5021991\\Desktop\\Test.txt");
             string sum2 = cmpFiles.CalculateMd5Hash("C:\\Users\\b5021991\\Desktop\\Test2.txt");
             if (sum1.Equals(sum2))

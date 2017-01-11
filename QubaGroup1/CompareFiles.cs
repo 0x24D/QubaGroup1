@@ -36,6 +36,13 @@ namespace QubaGroup1
         {
         }
 
+        //Might just have to checksum what we have and make a guess as to it being "up-to-date"
+        //Or Perhaps if the server has rollback files stored locally, we could work with that.
+        private void comparingFiles()
+        {
+
+        }
+
         //check names of "to be deployed" files
         //Probably using files that have been edited/added/deleted recently ie. today.        
         //[TestCase("")]
@@ -141,7 +148,7 @@ namespace QubaGroup1
 
         //find and get files with same name from "live" server
         //compare to files from "to be deployed" area
-        [TestCase("http://shugroupproject1.quba.co.uk/", "")]
+/*        [TestCase("http://shugroupproject1.quba.co.uk/", "")]
         public void compareTheFiles(string URL, string Repository, string filePath)
         {
             DateTime Now = DateTime.Now;
@@ -154,7 +161,7 @@ namespace QubaGroup1
             if (SpecificFile.Name == null)
             {
                 //getFileDetails(Repository, filePath);
-/*                foreach (file file in files)
+                foreach (file file in files)
                 {
                     if (file.State == ChangeKind.Modified)
                     {
@@ -205,7 +212,7 @@ namespace QubaGroup1
 
                     }
                 }
-*/          }
+          }
             else
             {
                 //getSpecificFileDetails(Repository, filePath);
@@ -251,7 +258,7 @@ namespace QubaGroup1
                 }
             }
         }
-
+*/
         private bool DirSearch(string sDir, string fileName)
         {
             bool found = false;
@@ -273,7 +280,7 @@ namespace QubaGroup1
             }
             return found;
         }
-        private DateTime ConvertFromDateTimeOffset(DateTimeOffset dateTime)
+/*        private DateTime ConvertFromDateTimeOffset(DateTimeOffset dateTime)
         {
             if (dateTime.Offset.Equals(TimeSpan.Zero))
                 return dateTime.UtcDateTime;
@@ -282,7 +289,7 @@ namespace QubaGroup1
             else
                 return dateTime.DateTime;
         }
-
+*/
         public string CalculateMd5Hash(string input)
         {
             string md5Sum;
