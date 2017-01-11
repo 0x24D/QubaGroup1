@@ -45,7 +45,7 @@ namespace QubaGroup1
             string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
 
             string tempClonePath = filePath + @"\tempClone";
-            System.IO.Directory.CreateDirectory(tempClonePath);
+        //    System.IO.Directory.CreateDirectory(tempClonePath);
 
             try
             {
@@ -85,7 +85,7 @@ namespace QubaGroup1
             string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
 
             string tempClonePath = filePath + @"\tempClone";
-            System.IO.Directory.CreateDirectory(tempClonePath);
+         //   System.IO.Directory.CreateDirectory(tempClonePath);
 
             try
             {
