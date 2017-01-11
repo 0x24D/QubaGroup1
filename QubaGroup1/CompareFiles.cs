@@ -19,7 +19,7 @@ namespace QubaGroup1
         public class file
         {
             public string Name { get; set; }
-            public ChangeKind State { get; set; }
+//            public ChangeKind State { get; set; }
             public DateTime LastModified { get; set; }
         }
 
@@ -39,7 +39,7 @@ namespace QubaGroup1
         //check names of "to be deployed" files
         //Probably using files that have been edited/added/deleted recently ie. today.        
         //[TestCase("")]
-        public void getFileDetails(string Repos, string filePath)
+/*        public void getFileDetails(string Repos, string filePath)
         {
             string User = "b5010811";
             string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
@@ -137,7 +137,7 @@ namespace QubaGroup1
 
             Directory.Delete(tempClonePath, true);
         }
-
+        */
 
         //find and get files with same name from "live" server
         //compare to files from "to be deployed" area
@@ -147,14 +147,14 @@ namespace QubaGroup1
             DateTime Now = DateTime.Now;
 
             SpecificFile.Name = "Test.cs";
-            SpecificFile.State = ChangeKind.Modified;
+//            SpecificFile.State = ChangeKind.Modified;
             SpecificFile.LastModified = new DateTime(2016, 12, 22);
 
 
             if (SpecificFile.Name == null)
             {
                 //getFileDetails(Repository, filePath);
-                foreach (file file in files)
+/*                foreach (file file in files)
                 {
                     if (file.State == ChangeKind.Modified)
                     {
@@ -205,10 +205,10 @@ namespace QubaGroup1
 
                     }
                 }
-            }
+*/          }
             else
             {
-                //getFileDetails(Repository, filePath);
+                //getSpecificFileDetails(Repository, filePath);
                 try
                 {
                     DirSearch(filePath, SpecificFile.Name);
@@ -216,8 +216,8 @@ namespace QubaGroup1
                     {
                         //means we've got our file.
                         DateTime dateLastWritten = System.IO.File.GetLastWriteTime(filePath);
-                        if ((DateTime.Compare(dateLastWritten, SpecificFile.LastModified) >= 0) &&
-                            (SpecificFile.State == ChangeKind.Modified | SpecificFile.State == ChangeKind.Renamed))
+                        if (DateTime.Compare(dateLastWritten, SpecificFile.LastModified) >= 0)// &&
+//                            (SpecificFile.State == ChangeKind.Modified | SpecificFile.State == ChangeKind.Renamed))
                         {
                             //Its all good, what do we do now?
 
