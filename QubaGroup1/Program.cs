@@ -17,7 +17,6 @@ namespace QubaGroup1
     {
         static string URL1 = "http://shugroupproject1.quba.co.uk"; // --  needs to changing so it not hard coded
         static string URL2 = "http://shugroupproject1.quba.co.uk"; // --  needs to changing so it not hard coded
-
         static string Repository = "https://quba.svn.beanstalkapp.com/shu-group-project-1/";
 
         //currently being tested, just comment it out if it causes issues.
@@ -25,27 +24,20 @@ namespace QubaGroup1
 
         static void Main(string[] args)
         {
-            PingTest ping = new PingTest();
+            PingTest p = new PingTest();
             CompareFiles cmpFiles = new CompareFiles();
             LinkTest check = new LinkTest(); // added this into PingTest however i am unsure of the potenial uses for it 
 
-            ping.TestCase(URL1);
+            p.Ping(URL1);
             check.TestCase(URL2);
-
-           
-
             //CmpFiles.getFileDetails(Repository, filePath);
             //CmpFiles.compareTheFiles(URL1, Repository, filePath);
             string sum1 = cmpFiles.CalculateMd5Hash("C:\\Users\\b5021991\\Desktop\\Test.txt");
             string sum2 = cmpFiles.CalculateMd5Hash("C:\\Users\\b5021991\\Desktop\\Test2.txt");
             if (sum1.Equals(sum2))
-            {
                 Console.WriteLine("MD5sums match");
-            }
             else
-            {
                 Console.WriteLine("MD5sums do not match");
-            }
             Console.ReadLine();
         }
         
