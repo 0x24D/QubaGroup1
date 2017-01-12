@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 //using LibGit2Sharp; //Allows us to read the beanstalk git files
-using Octopus.Client;
+using Octopus;
 using NUnit.Framework;
 using NUnit;
 
@@ -88,6 +88,21 @@ namespace QubaGroup1
 
                 return ((file1byte - file2byte) == 0);
             }
+        }
+
+        private void OctopusCode()
+        {
+            //First - Check verions
+            int prevID = Octopus.Parameters["Octopus.Release.Previous.Number"]
+            int currentID = Octopus.Parameters["Octopus.Release.CurrentForEnvironment.Number"]
+            if (currentID == PrevID || currentID < PrevID)
+            {
+                //Failed
+            }
+            //Second - Compare files
+            oldFIlePath = Octopus.Parameters["Octopus.Tentacle.PreviousInstallation.PackageFilePath"];
+            currentFilePath = Octopus.Parameters["Octopus.Tentacle.CurrentDeployment.PackageFilePath"];    
+}
         }
 
         //check names of "to be deployed" files
