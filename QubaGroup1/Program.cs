@@ -20,13 +20,15 @@ namespace QubaGroup1
         static string Repository = "https://quba.svn.beanstalkapp.com/shu-group-project-1/";
 
         //currently being tested, just comment it out if it causes issues.
-         static string filePath = @"F:\MyWork\Test";//Directory.GetCurrentDirectory();
+        static string dir1 = @"C:\Users\mikep\Desktop\index\SHUGroupProject1\index.aspx";
+        static string dir2 = @"C:\Users\mikep\Desktop\index - Copy\SHUGroupProject1\index.aspx";
 
         static void Main(string[] args)
         {
             PingTest p = new PingTest();
             CompareFiles cmpFiles = new CompareFiles();
             LinkTest check = new LinkTest(); // added this into PingTest however i am unsure of the potenial uses for it 
+            FileComp f = new FileComp();
 
             p.Ping(URL1);
             check.TestCase(URL2);
@@ -38,6 +40,9 @@ namespace QubaGroup1
                 Console.WriteLine("MD5sums match");
             else
                 Console.WriteLine("MD5sums do not match");
+
+            Console.WriteLine(f.whichFileIsNewer(dir1,dir2));
+
             Console.ReadLine();
         }
         
