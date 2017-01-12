@@ -20,7 +20,7 @@ namespace QubaGroup1
         public class file
         {
             public string Name { get; set; }
-            //            public ChangeKind State { get; set; }
+            //  public ChangeKind State { get; set; }
             public DateTime LastModified { get; set; }
         }
 
@@ -95,8 +95,8 @@ namespace QubaGroup1
         private void OctopusCode()
         {
             //First - Check verions
-            int prevID = Octopus.Parameters["Octopus.Release.Previous.Number"]
-            int currentID = Octopus.Parameters["Octopus.Release.CurrentForEnvironment.Number"]
+            int prevID = Octopus.Parameters["Octopus.Release.Previous.Number"];
+            int currentID = Octopus.Parameters["Octopus.Release.CurrentForEnvironment.Number"];
             if (currentID == PrevID || currentID < PrevID)
             {
                 //Failed
