@@ -37,10 +37,10 @@ namespace QubaGroup1
         {
         }
 
-        private bool whichFileIsNewer(File f1, File f2)
+        private bool whichFileIsNewer(string f1, string f2)
         {
-            fi1 = new FileInfo(f1);
-            fi2 = new FileInfo(f2);
+            FileInfo fi1 = new FileInfo(f1);
+            FileInfo fi2 = new FileInfo(f2);
 
 
             if (fi1.CreationTimeUtc > fi2.CreationTimeUtc)
@@ -53,14 +53,14 @@ namespace QubaGroup1
 
         //Might just have to checksum what we have and make a guess as to it being "up-to-date"
         //Or Perhaps if the server has rollback files stored locally, we could work with that.
-        private bool comparingFiles(File f1, File f2)
+        private bool comparingFiles(string f1, string f2)
         {
             if (f1 == f2)
                 return true;
 
 
-            fs1 = new FileStream(file1, FileMode.Open);
-            fs2 = new FileStream(file2, FileMode.Open);
+            FileStream fs1 = new FileStream(f1, FileMode.Open);
+            FileStream fs2 = new FileStream(f2, FileMode.Open);
 
 
 
@@ -76,6 +76,8 @@ namespace QubaGroup1
             }
             else
             {
+                int file1byte;
+                int file2byte;
                 do
                 {
                     file1byte = fs1.ReadByte();
@@ -105,6 +107,11 @@ namespace QubaGroup1
 }
         }
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 66a53854192ae4db129d629c1863463d6e0c7ca9
         //check names of "to be deployed" files
         //Probably using files that have been edited/added/deleted recently ie. today.        
         //[TestCase("")]
@@ -117,6 +124,7 @@ namespace QubaGroup1
                 //    System.IO.Directory.CreateDirectory(tempClonePath);
 
                     try
+<<<<<<< HEAD
                     {
                         CloneOptions co = new CloneOptions();
                         co.CredentialsProvider = (_url, _user, _cred) =>
@@ -162,18 +170,73 @@ namespace QubaGroup1
                         co.CredentialsProvider = (_url, _user, _cred) =>
                             new DefaultCredentials();
 
+=======
+                    {
+                        CloneOptions co = new CloneOptions();
+                        co.CredentialsProvider = (_url, _user, _cred) =>
+                        new UsernamePasswordCredentials {Username = User, Password = Pass};
+
+                        using (Repository repo = new Repository(Repository.Clone(Repos, tempClonePath, co)))
+                        {
+                            Tree commitTree = repo.Head.Tip.Tree; // Main Tree
+                            Tree parentCommitTree = repo.Head.Tip.Parents.Single().Tree; // Secondary Tree
+
+                            var patch = repo.Diff.Compare<Patch>(parentCommitTree, commitTree); // Difference
+
+                            foreach (var ptc in patch)
+                            {
+                                file file = new file();
+                                file.Name = Path.GetFileName(ptc.Path);
+                                file.State = ptc.Status;
+                                file.LastModified = DateTime.Now;
+                                files.Add(file);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        Directory.Delete(tempClonePath, true);
+                        Assert.Fail();
+                    }
+
+                    Directory.Delete(tempClonePath, true);
+                }
+
+                private void getSpecificFileDetails(string Repos, string filePath)
+                {
+                    string User = "b5010811";
+                    string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
+
+                    string tempClonePath = filePath + @"\tempClone";
+                 //   System.IO.Directory.CreateDirectory(tempClonePath);
+
+                    try
+                    {
+                        CloneOptions co = new CloneOptions();
+                        co.CredentialsProvider = (_url, _user, _cred) =>
+                            new DefaultCredentials();
+
+>>>>>>> 66a53854192ae4db129d629c1863463d6e0c7ca9
                         using (Repository repo = new Repository(Repository.Clone(Repos, tempClonePath, co)))
                         {
                             //May find the last commit of a file NEEDS TESTING ONCE CLONING WORKS
                             var path = tempClonePath + @"\" + SpecificFile.Name;
                             var commit = repo.Head.Tip;
                             var gitObj = commit[path].Target;
+<<<<<<< HEAD
+
+=======
                     
+>>>>>>> 66a53854192ae4db129d629c1863463d6e0c7ca9
                             var set = new HashSet<string>();
                             var queue = new Queue<Commit>();
                             queue.Enqueue(commit);
                             set.Add(commit.Sha);
+<<<<<<< HEAD
+
+=======
                     
+>>>>>>> 66a53854192ae4db129d629c1863463d6e0c7ca9
                             while (queue.Count > 0)
                             {
                                 commit = queue.Dequeue();
@@ -365,4 +428,8 @@ namespace QubaGroup1
             return md5Sum;
         }
     }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 66a53854192ae4db129d629c1863463d6e0c7ca9
 }
