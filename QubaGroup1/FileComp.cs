@@ -88,17 +88,16 @@ namespace QubaGroup1
                     foreach (string f in Directory.GetFiles(d, fileName))
                     {
                         fPaths[dirCounter].Add(f);
-                        found = true;
                     }
                     DirSearch(d, fileName);
                 }
                 dirCounter++;
             }
-            catch (System.Exception)
+            catch ()
             {
-                return found;
+                return false;
             }
-
+            return true;
         }
     }
 }
