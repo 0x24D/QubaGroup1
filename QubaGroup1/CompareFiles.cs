@@ -91,7 +91,7 @@ namespace QubaGroup1
                 return ((file1byte - file2byte) == 0);
             }
         }
-
+        /*
         private void OctopusCode()
         {
             //First - Check verions
@@ -104,14 +104,14 @@ namespace QubaGroup1
             //Second - Compare files
             oldFIlePath = Octopus.Parameters["Octopus.Tentacle.PreviousInstallation.PackageFilePath"];
             currentFilePath = Octopus.Parameters["Octopus.Tentacle.CurrentDeployment.PackageFilePath"];    
-}
         }
+        */
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
 
-=======
->>>>>>> 66a53854192ae4db129d629c1863463d6e0c7ca9
+//=======
+//>>>>>>> 66a53854192ae4db129d629c1863463d6e0c7ca9
         //check names of "to be deployed" files
         //Probably using files that have been edited/added/deleted recently ie. today.        
         //[TestCase("")]
@@ -428,8 +428,8 @@ namespace QubaGroup1
             return md5Sum;
         }
     }
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
-=======
->>>>>>> 66a53854192ae4db129d629c1863463d6e0c7ca9
+//=======
+//>>>>>>> 66a53854192ae4db129d629c1863463d6e0c7ca9
 }
