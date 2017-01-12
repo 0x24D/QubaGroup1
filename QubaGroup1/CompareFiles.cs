@@ -36,6 +36,20 @@ namespace QubaGroup1
         {
         }
 
+        private bool whichFileIsNewer(File f1, File f2)
+        {
+            fi1 = new FileInfo(file1);
+            fi2 = new FileInfo(file2);
+
+
+            if (fi1.CreationTimeUtc > fi2.CreationTimeUtc)
+                //file 1 is newer
+                return true;
+            else
+                //file 2 is newer
+                return false;
+        }
+
         //Might just have to checksum what we have and make a guess as to it being "up-to-date"
         //Or Perhaps if the server has rollback files stored locally, we could work with that.
         private bool comparingFiles(File f1, File f2)
@@ -47,13 +61,16 @@ namespace QubaGroup1
             fs1 = new FileStream(file1, FileMode.Open);
             fs2 = new FileStream(file2, FileMode.Open);
 
+
+
+
             if (fs1.Length != fs2.Length)
             {
-                
+
                 fs1.Close();
                 fs2.Close();
 
-                
+
                 return false;
             }
             else
