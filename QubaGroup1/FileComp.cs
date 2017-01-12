@@ -15,6 +15,7 @@ namespace QubaGroup1
 
     public class FileComp
     {
+        List<List<string>> fPaths;
         public FileComp()
         {
         }
@@ -70,6 +71,34 @@ namespace QubaGroup1
 
                 return ((file1byte - file2byte) == 0);
             }
+        }
+
+
+
+
+        private bool DirSearch(string sDir, string fileName)
+        {
+            bool found = false;
+            int dirCounter = 0; // to ensure all paths are sorted by directory, allowing easy Indexing
+            try
+            {
+                foreach (string d in Directory.GetDirectories(sDir))
+                {
+                    fPaths.Add(new List<string>());
+                    foreach (string f in Directory.GetFiles(d, fileName))
+                    {
+                        fPaths[dirCounter].Add(f);
+                        found = true;
+                    }
+                    DirSearch(d, fileName);
+                }
+                dirCounter++;
+            }
+            catch (System.Exception)
+            {
+                return found;
+            }
+
         }
     }
 }

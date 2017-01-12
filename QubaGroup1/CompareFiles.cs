@@ -53,44 +53,7 @@ namespace QubaGroup1
 
         //Might just have to checksum what we have and make a guess as to it being "up-to-date"
         //Or Perhaps if the server has rollback files stored locally, we could work with that.
-        private bool comparingFiles(string f1, string f2)
-        {
-            if (f1 == f2)
-                return true;
 
-
-            FileStream fs1 = new FileStream(f1, FileMode.Open);
-            FileStream fs2 = new FileStream(f2, FileMode.Open);
-
-
-
-
-            if (fs1.Length != fs2.Length)
-            {
-
-                fs1.Close();
-                fs2.Close();
-
-
-                return false;
-            }
-            else
-            {
-                int file1byte;
-                int file2byte;
-                do
-                {
-                    file1byte = fs1.ReadByte();
-                    file2byte = fs2.ReadByte();
-                }
-                while ((file1byte == file2byte) && (file1byte != -1));
-
-                fs1.Close();
-                fs2.Close();
-
-                return ((file1byte - file2byte) == 0);
-            }
-        }
         /*
         private void OctopusCode()
         {
