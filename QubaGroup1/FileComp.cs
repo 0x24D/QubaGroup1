@@ -19,13 +19,13 @@ namespace QubaGroup1
         {
         }
 
-        private bool whichFileIsNewer(string f1, string f2)
+        public bool whichFileIsNewer(string f1, string f2)
         {
             FileInfo fi1 = new FileInfo(f1);
             FileInfo fi2 = new FileInfo(f2);
 
 
-            if (fi1.CreationTimeUtc > fi2.CreationTimeUtc)
+            if (fi1.LastWriteTime > fi2.LastWriteTime)
                 //file 1 is newer
                 return true;
             else
@@ -33,7 +33,7 @@ namespace QubaGroup1
                 return false;
         }
 
-        private bool comparingFiles(string f1, string f2)
+        public bool comparingFiles(string f1, string f2)
         {
             if (f1 == f2)
                 return true;
