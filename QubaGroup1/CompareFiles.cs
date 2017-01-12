@@ -38,8 +38,8 @@ namespace QubaGroup1
 
         private bool whichFileIsNewer(File f1, File f2)
         {
-            fi1 = new FileInfo(file1);
-            fi2 = new FileInfo(file2);
+            fi1 = new FileInfo(f1);
+            fi2 = new FileInfo(f2);
 
 
             if (fi1.CreationTimeUtc > fi2.CreationTimeUtc)
