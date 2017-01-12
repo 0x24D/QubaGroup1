@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 //using LibGit2Sharp; //Allows us to read the beanstalk git files
+using Octopus.Client;
 using NUnit.Framework;
 using NUnit;
 
