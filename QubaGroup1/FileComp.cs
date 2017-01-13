@@ -92,9 +92,9 @@ namespace QubaGroup1
                     DirSearch(d, fileName);
                     dirCounter++;
                 }
-                
+
             }
-            catch 
+            catch
             {
                 return false;
             }
