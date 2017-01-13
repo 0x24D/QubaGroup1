@@ -1,42 +1,25 @@
-﻿using HtmlAgilityPack;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using HtmlAgilityPack;
 
-List<string> links = new List<string>();
-int j = 0;
-string url2 = "http://www.shugroupproject1.quba.co.uk/";
-HtmlWeb hw = new HtmlWeb();
-HtmlDocument doc = hw.Load(url2);
-foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
+namespace Link_Test
 {
-    string hrefValue = link.GetAttributeValue("href", string.Empty);
-    links.Add(hrefValue);
-    j++;
-    Console.WriteLine(j + " Link(s) found");
-}
-for (int i = 0; i < links.Count; i++)
-{
-    Console.WriteLine(links[i]);
-}
-Console.WriteLine("");
-////////////////////////////////////ping each hyperlink
-for (int i = 0; i < links.Count; i++)
-{
-    try
+    public class LinkTest
     {
-
         List<string> links = new List<string>();
-        [TestCase("http://shugroupproject1.quba.co.uk")]
-        public void TestCase(string url2)
+        public void Test(string url)
         {
             int j = 0;
             HtmlWeb hw = new HtmlWeb();
-            HtmlDocument doc = hw.Load(url2);
+            HtmlDocument doc = hw.Load(url);
             foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
             {
                 string hrefValue = link.GetAttributeValue("href", string.Empty);
                 links.Add(hrefValue);
                 j++;
                 Console.WriteLine(j + " Link(s) found");
-                Console.WriteLine(""); 
+                Console.WriteLine("");
             }
             for (int i = 0; i < links.Count; i++)
             {
@@ -45,7 +28,7 @@ for (int i = 0; i < links.Count; i++)
             Console.WriteLine("");
             for (int i = 0; i < links.Count; i++)
             {
-               
+
                 try
                 {
                     HttpWebRequest request = WebRequest.Create(links[i]) as HttpWebRequest;
@@ -55,18 +38,15 @@ for (int i = 0; i < links.Count; i++)
 
                     using (var response = request.GetResponse())
                     {
-                        Console.WriteLine(links[i] + " connected"); 
+                        Console.WriteLine(links[i] + " connected");
                     }
                 }
                 catch
                 {
                     Console.WriteLine(links[i] + " failed");
                 }
-
             }
-    }
-    catch
-    {
-        Console.WriteLine(links[i] + " failed");
+            Console.ReadLine();
+        }
     }
 }

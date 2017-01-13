@@ -1,24 +1,16 @@
 ﻿using System;
 using System.IO;
-using System.Web;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-//using Octopus;
 using LibGit2Sharp;
 
-
-namespace QubaGroup1
+namespace Checksum_Test
 {
-
-    public class FileComp
+    public class FileCompare
     {
         List<List<string>> fPaths = new List<List<String>>();
-
-
-        public FileComp()
+        public FileCompare()
         {
         }
 
@@ -26,7 +18,6 @@ namespace QubaGroup1
         {
             FileInfo fi1 = new FileInfo(f1);
             FileInfo fi2 = new FileInfo(f2);
-
 
             if (fi1.LastWriteTime > fi2.LastWriteTime)
                 //file 1 is newer
@@ -41,20 +32,13 @@ namespace QubaGroup1
             if (f1 == f2)
                 return true;
 
-
             FileStream fs1 = new FileStream(f1, FileMode.Open);
             FileStream fs2 = new FileStream(f2, FileMode.Open);
 
-
-
-
             if (fs1.Length != fs2.Length)
             {
-
                 fs1.Close();
                 fs2.Close();
-
-
                 return false;
             }
             else
@@ -65,20 +49,13 @@ namespace QubaGroup1
                 {
                     file1byte = fs1.ReadByte();
                     file2byte = fs2.ReadByte();
-                }
-                while ((file1byte == file2byte) && (file1byte != -1));
-
-
+                } while ((file1byte == file2byte) && (file1byte != -1));
 
                 fs1.Close();
                 fs2.Close();
-
                 return ((file1byte - file2byte) == 0); // will be true if files are identical
             }
         }
-
-
-
 
         public void DirSearch(string sDir, List<string> list)
         {
@@ -109,9 +86,6 @@ namespace QubaGroup1
                 }
             }
         }
-
-
-
 
         public void cloneRepo(string Repos, string tempClonePath, string oldPath)
         {

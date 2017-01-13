@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("QubaGroup1")]
+[assembly: AssemblyTitle("Web Request Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("QubaGroup1")]
+[assembly: AssemblyProduct("Web Request Test")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8502f262-7d8a-484d-a798-cfd49aefef86")]
+[assembly: Guid("981a29bf-ac60-4052-9fc4-e9b7e1b282f0")]
 
 // Version information for an assembly consists of the following four values:
 //
