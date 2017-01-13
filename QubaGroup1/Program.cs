@@ -22,6 +22,8 @@ namespace QubaGroup1
         //currently being tested, just comment it out if it causes issues.
         static string dir1 = @"C:\Users\mikep\Desktop\index\SHUGroupProject1\index.aspx";
         static string dir2 = @"C:\Users\mikep\Desktop\index - Copy\SHUGroupProject1\index.aspx";
+  
+
 
         static void Main(string[] args)
         {
@@ -41,6 +43,9 @@ namespace QubaGroup1
             else
                 Console.WriteLine("MD5sums do not match");
 
+            string tempClonePath = @"C:\temp";
+            string Repos = @"https://github.com/M1K3L08/QubaWebsiteG1.git";
+
             if (f.whichFileIsNewer(dir1, dir2))
             {
                 Console.WriteLine("File 1 is newer");
@@ -49,6 +54,8 @@ namespace QubaGroup1
             {
                 Console.WriteLine("File 2 is newer");
             }
+
+            f.cloneRepo(Repos, tempClonePath);
             Console.ReadLine();
         }
         

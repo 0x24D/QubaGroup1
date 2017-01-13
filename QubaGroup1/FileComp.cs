@@ -6,10 +6,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-//using Octopus;
+using LibGit2Sharp;
 
 namespace QubaGroup1
-{
+{ 
 
     public class FileComp
     {
@@ -99,6 +99,32 @@ namespace QubaGroup1
                 return false;
             }
             return true;
+        }
+
+
+
+
+        public void cloneRepo(string Repos, string tempClonePath)
+        {
+            string user = "mikepress88@gmail.com";
+            string pass = "qubagroup1";
+
+            try
+            {
+                CloneOptions co = new CloneOptions();
+
+                co.CredentialsProvider = (_url,_user,_cred) => new UsernamePasswordCredentials() {Username = user, Password = pass};
+
+                using (Repository repo = new Repository(Repository.Clone(Repos, tempClonePath, co)))
+                {
+                    
+                }
+            }
+            catch 
+            {
+                Console.WriteLine("EX_NAME");
+        
+            }
         }
     }
 }
