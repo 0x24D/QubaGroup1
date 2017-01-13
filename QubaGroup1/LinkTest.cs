@@ -28,26 +28,27 @@ namespace QubaGroup1
                 links.Add(hrefValue);
                 j++;
                 Console.WriteLine(j + " Link(s) found");
+                Console.WriteLine(""); 
             }
             for (int i = 0; i < links.Count; i++)
             {
                 Console.WriteLine(links[i]);
             }
             Console.WriteLine("");
-            ////////////////////////////////////ping each hyperlink
             for (int i = 0; i < links.Count; i++)
             {
+               
                 try
                 {
-                        HttpWebRequest request = WebRequest.Create(links[i]) as HttpWebRequest;
-                        request.Timeout = 3000;
-                        request.AllowAutoRedirect = true; // find out if this site is up and don't follow a redirector
-                        request.Method = "HEAD";
+                    HttpWebRequest request = WebRequest.Create(links[i]) as HttpWebRequest;
+                    request.Timeout = 3000;
+                    request.AllowAutoRedirect = true; // find out if this site is up and follow a redirector
+                    request.Method = "HEAD";
 
-                        using (var response = request.GetResponse())
-                        {
-                            Console.WriteLine(links[i] + " connected");
-                        }
+                    using (var response = request.GetResponse())
+                    {
+                        Console.WriteLine(links[i] + " connected"); 
+                    }
                 }
                 catch
                 {

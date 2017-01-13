@@ -20,6 +20,8 @@ namespace QubaGroup1
         static string Repository = "https://quba.svn.beanstalkapp.com/shu-group-project-1/";
 
         //currently being tested, just comment it out if it causes issues.
+         static string filePath = @"F:\MyWork\Test";//Directory.GetCurrentDirectory();
+
         static string dir1 = @"C:\Users\mikep\Desktop\index\SHUGroupProject1\index.aspx";
         static string dir2 = @"C:\Users\mikep\Desktop\index - Copy\SHUGroupProject1\index.aspx";
   
@@ -30,10 +32,9 @@ namespace QubaGroup1
             PingTest p = new PingTest();
             CompareFiles cmpFiles = new CompareFiles();
             LinkTest check = new LinkTest(); // added this into PingTest however i am unsure of the potenial uses for it 
-            FileComp f = new FileComp();
 
-            p.Ping(URL1);
-            check.TestCase(URL2);
+//            p.Ping(URL1);
+//            check.TestCase(URL2);
 //            cmpFiles.getFileDetails(Repository, filePath);
 //            cmpFiles.compareTheFiles(URL1, Repository, filePath);
             string sum1 = cmpFiles.CalculateMd5Hash("C:\\Users\\b5021991\\Desktop\\Test.txt");
@@ -56,6 +57,13 @@ namespace QubaGroup1
             }
 
             f.cloneRepo(Repos, tempClonePath);
+            cmpFiles.compareTheFiles(URL1, Repository, filePath);
+//            string sum1 = cmpFiles.CalculateMd5Hash("C:\\Users\\b5021991\\Desktop\\Test.txt");
+//            string sum2 = cmpFiles.CalculateMd5Hash("C:\\Users\\b5021991\\Desktop\\Test2.txt");
+//            if (sum1.Equals(sum2))
+//                Console.WriteLine("MD5sums match");
+//            else
+//                Console.WriteLine("MD5sums do not match");
             Console.ReadLine();
         }
         
