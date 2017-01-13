@@ -93,173 +93,110 @@ namespace QubaGroup1
         //check names of "to be deployed" files
         //Probably using files that have been edited/added/deleted recently ie. today.        
         //[TestCase("")]
-        /*              public void getFileDetails(string Repos, string filePath)
+              public void getFileDetails(string Repos, string filePath)
+                {
+                    string User = "b5010811";
+                    string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
+
+                    string tempClonePath = filePath + @"\tempClone";
+                //    System.IO.Directory.CreateDirectory(tempClonePath);
+
+                    try
+                    {
+                        CloneOptions co = new CloneOptions();
+                        co.CredentialsProvider = (_url, _user, _cred) =>
+                        new UsernamePasswordCredentials {Username = User, Password = Pass};
+
+                        using (Repository repo = new Repository(Repository.Clone(Repos, tempClonePath, co)))
                         {
-                            string User = "b5010811";
-                            string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
+                            Tree commitTree = repo.Head.Tip.Tree; // Main Tree
+                            Tree parentCommitTree = repo.Head.Tip.Parents.Single().Tree; // Secondary Tree
 
-                            string tempClonePath = filePath + @"\tempClone";
-                        //    System.IO.Directory.CreateDirectory(tempClonePath);
+                            var patch = repo.Diff.Compare<Patch>(parentCommitTree, commitTree); // Difference
 
-                            try
+                            foreach (var ptc in patch)
                             {
-                                CloneOptions co = new CloneOptions();
-                                co.CredentialsProvider = (_url, _user, _cred) =>
-                                new UsernamePasswordCredentials {Username = User, Password = Pass};
-
-                                using (Repository repo = new Repository(Repository.Clone(Repos, tempClonePath, co)))
-                                {
-                                    Tree commitTree = repo.Head.Tip.Tree; // Main Tree
-                                    Tree parentCommitTree = repo.Head.Tip.Parents.Single().Tree; // Secondary Tree
-
-                                    var patch = repo.Diff.Compare<Patch>(parentCommitTree, commitTree); // Difference
-
-                                    foreach (var ptc in patch)
-                                    {
-                                        file file = new file();
-                                        file.Name = Path.GetFileName(ptc.Path);
-                                        file.State = ptc.Status;
-                                        file.LastModified = DateTime.Now;
-                                        files.Add(file);
-                                    }
-                                }
+                                file file = new file();
+                                file.Name = Path.GetFileName(ptc.Path);
+                                file.State = ptc.Status;
+                                file.LastModified = DateTime.Now;
+                                files.Add(file);
                             }
-                            catch
-                            {
-                                Directory.Delete(tempClonePath, true);
-                                Assert.Fail();
-                            }
-
-                            Directory.Delete(tempClonePath, true);
                         }
+                    }
+                    catch
+                    {
+                        Directory.Delete(tempClonePath, true);
+                    }
 
-                        private void getSpecificFileDetails(string Repos, string filePath)
+                    Directory.Delete(tempClonePath, true);
+                }
+
+                private void getSpecificFileDetails(string Repos, string filePath)
+                {
+                    string User = "b5010811";
+                    string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
+
+                    string tempClonePath = filePath + @"\tempClone";
+                 //   System.IO.Directory.CreateDirectory(tempClonePath);
+
+                    try
+                    {
+                        CloneOptions co = new CloneOptions();
+                        co.CredentialsProvider = (_url, _user, _cred) =>
+                        new DefaultCredentials();
+
+                        using (Repository repo = new Repository(Repository.Clone(Repos, tempClonePath, co)))
                         {
-                            string User = "b5010811";
-                            string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
+                            //May find the last commit of a file NEEDS TESTING ONCE CLONING WORKS
+                            var path = tempClonePath + @"\" + SpecificFile.Name;
+                            var commit = repo.Head.Tip;
+                            var gitObj = commit[path].Target;
+                            var set = new HashSet<string>();
+                            var queue = new Queue<Commit>();
+                            queue.Enqueue(commit);
+                            set.Add(commit.Sha);
 
-                            string tempClonePath = filePath + @"\tempClone";
-                         //   System.IO.Directory.CreateDirectory(tempClonePath);
-
-                            try
+                            while (queue.Count > 0)
                             {
-                                CloneOptions co = new CloneOptions();
-                                co.CredentialsProvider = (_url, _user, _cred) =>
-                                    new DefaultCredentials();
-                            {
-                                CloneOptions co = new CloneOptions();
-                                co.CredentialsProvider = (_url, _user, _cred) =>
-                                new UsernamePasswordCredentials {Username = User, Password = Pass};
-
-                                using (Repository repo = new Repository(Repository.Clone(Repos, tempClonePath, co)))
+                                commit = queue.Dequeue();
+                                var go = false;
+                                foreach (var parent in commit.Parents)
                                 {
-                                    Tree commitTree = repo.Head.Tip.Tree; // Main Tree
-                                    Tree parentCommitTree = repo.Head.Tip.Parents.Single().Tree; // Secondary Tree
-
-                                    var patch = repo.Diff.Compare<Patch>(parentCommitTree, commitTree); // Difference
-
-                                    foreach (var ptc in patch)
-                                    {
-                                        file file = new file();
-                                        file.Name = Path.GetFileName(ptc.Path);
-                                        file.State = ptc.Status;
-                                        file.LastModified = DateTime.Now;
-                                        files.Add(file);
-                                    }
+                                    var tree = parent[path];
+                                    if (tree == null)
+                                        continue;
+                                        var eq = tree.Target.Sha == gitObj.Sha;
+                                        if (eq && set.Add(parent.Sha))
+                                            queue.Enqueue(parent);
+                                        go = go || eq;
                                 }
-                            }
-                            catch
-                            {
-                                Directory.Delete(tempClonePath, true);
-                                Assert.Fail();
+                                if (!go)
+                                   break;
                             }
 
-                            Directory.Delete(tempClonePath, true);
+                            Tree commitTree = repo.Head.Tip.Tree; // Main Tree
+                            Tree parentCommitTree = repo.Head.Tip.Parents.Single().Tree; // Secondary Tree
+
+                            var patch = repo.Diff.Compare<Patch>(parentCommitTree, commitTree); // Difference
+
+                            foreach (var ptc in patch)
+                            {
+                                if (Path.GetFileName(ptc.Path) == SpecificFile.Name)
+                                    SpecificFile.State = ptc.Status;
+                            }
+                            SpecificFile.LastModified = ConvertFromDateTimeOffset(commit.Committer.When);
+
                         }
+                    }
+                    catch
+                    {
+                        Directory.Delete(tempClonePath, true);
+                    }
 
-                        private void getSpecificFileDetails(string Repos, string filePath)
-                        {
-                            string User = "b5010811";
-                            string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
+                    Directory.Delete(tempClonePath, true);
+                }
 
-                            string tempClonePath = filePath + @"\tempClone";
-                         //   System.IO.Directory.CreateDirectory(tempClonePath);
-
-                            try
-                            {
-                                CloneOptions co = new CloneOptions();
-                                co.CredentialsProvider = (_url, _user, _cred) =>
-                                new DefaultCredentials();
-
-                                using (Repository repo = new Repository(Repository.Clone(Repos, tempClonePath, co)))
-                                {
-                                    //May find the last commit of a file NEEDS TESTING ONCE CLONING WORKS
-                                    var path = tempClonePath + @"\" + SpecificFile.Name;
-                                    var commit = repo.Head.Tip;
-                                    var gitObj = commit[path].Target;
-                                    var set = new HashSet<string>();
-                                    var queue = new Queue<Commit>();
-                                    queue.Enqueue(commit);
-                                    set.Add(commit.Sha);
-
-                                    while (queue.Count > 0)
-                                    {
-                                        commit = queue.Dequeue();
-                                        var go = false;
-                                        foreach (var parent in commit.Parents)
-                                        {
-                                            var tree = parent[path];
-                                            if (tree == null)
-                                                continue;
-                                                var eq = tree.Target.Sha == gitObj.Sha;
-                                                if (eq && set.Add(parent.Sha))
-                                                    queue.Enqueue(parent);
-                                                go = go || eq;
-                                        }
-                                        if (!go)
-                                           break;
-                                    }
-
-                                    // output is: 49781a0  Blame: minor cleanup
-                                    //Console.WriteLine("{0}  {1}", commit.Sha.Substring(0, 7), commit.MessageShort);
-
-                                    SpecificFile.LastModified = ConvertFromDateTimeOffset(commit.Committer.When);
-                                }
-                            }
-                            catch
-                            {
-                                Directory.Delete(tempClonePath, true);
-                                Assert.Fail();
-                            }
-
-                            Directory.Delete(tempClonePath, true);
-                        }
-
-                    file file2 = new file();
-                    file2.Name = "Test21.cs";
-                    file2.State = ChangeKind.Modified;
-                    file2.LastModified = new DateTime(2016, 12, 22);
-
-                    file file3 = new file();
-                    file3.Name = "Test22.cs";
-                    file3.State = ChangeKind.Renamed;
-                    file3.LastModified = new DateTime(2016, 12, 22);
-
-                    file file4 = new file();
-                    file4.Name = "Test23.cs";
-                    file4.State = ChangeKind.Modified;
-                    file4.LastModified = new DateTime(2016, 12, 22);
-
-                    file file5 = new file();
-                    file5.Name = "Test24.cs";
-                    file5.State = ChangeKind.Deleted;
-                    file5.LastModified = new DateTime(2016, 12, 22);
-
-                    files.Add(file2);
-                    files.Add(file3);
-                    files.Add(file4);
-                    files.Add(file5);
-        */
         //find and get files with same name from "live" server
         //compare to files from "to be deployed" area
         public void compareTheFiles(string URL, string Repository, string filePath)
@@ -270,6 +207,30 @@ namespace QubaGroup1
 //            SpecificFile.State = ChangeKind.Modified;
 //            SpecificFile.LastModified = new DateTime(2016, 12, 22);
 
+            file file2 = new file();
+            file2.Name = "Test21.cs";
+            file2.State = ChangeKind.Modified;
+            file2.LastModified = new DateTime(2016, 12, 22);
+
+            file file3 = new file();
+            file3.Name = "Test22.cs";
+            file3.State = ChangeKind.Renamed;
+            file3.LastModified = new DateTime(2016, 12, 22);
+
+            file file4 = new file();
+            file4.Name = "Test23.cs";
+            file4.State = ChangeKind.Modified;
+            file4.LastModified = new DateTime(2016, 12, 22);
+
+            file file5 = new file();
+            file5.Name = "Test24.cs";
+            file5.State = ChangeKind.Deleted;
+            file5.LastModified = new DateTime(2016, 12, 22);
+
+            files.Add(file2);
+            files.Add(file3);
+            files.Add(file4);
+            files.Add(file5);
 
 
             if (SpecificFile.Name == null)
