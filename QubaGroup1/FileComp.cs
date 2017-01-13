@@ -13,6 +13,91 @@ namespace QubaGroup1
 
     public class FileComp
     {
+
+        public class file
+        {
+            public string Name { get; set; }
+            public ChangeKind State { get; set; }
+            public DateTime LastModified { get; set; }
+        }
+
+        List<file> files = new List<file>();
+        file SpecificFile = new file();
+
+                //check names of "to be deployed" files
+        //Probably using files that have been edited/added/deleted recently ie. today.        
+        //[TestCase("")]
+                 public void getFileDetails(string Repos, string filePath)
+                {
+                    string User = "b5010811";
+                    string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
+
+                    string tempClonePath = filePath + @"\tempClone";
+                //    System.IO.Directory.CreateDirectory(tempClonePath);
+
+                    try
+                    {
+                        using (Repository repo = new Repository())
+                        {
+                            Tree commitTree = repo.Head.Tip.Tree; // Main Tree
+                            Tree parentCommitTree = repo.Head.Tip.Parents.Single().Tree; // Secondary Tree
+
+                            var patch = repo.Diff.Compare<Patch>(parentCommitTree, commitTree); // Difference
+
+                            foreach (var ptc in patch)
+                            {
+                                file file = new file();
+                                file.Name = Path.GetFileName(ptc.Path);
+                                file.State = ptc.Status;
+                                file.LastModified = DateTime.Now;
+                                files.Add(file);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        Directory.Delete(tempClonePath, true);
+                    }
+
+                    Directory.Delete(tempClonePath, true);
+                }
+
+                private void getSpecificFileDetails(string Repos, string filePath)
+                {
+                    string User = "b5010811";
+                    string Pass = "310e95ed404ab86756d75833d9a3689bbbb99aaef2536af0b2";
+
+                    string tempClonePath = filePath + @"\tempClone";
+                 //   System.IO.Directory.CreateDirectory(tempClonePath);
+
+                    try
+                    {
+
+                        using (Repository repo = new Repository())
+                        {
+                            Tree commitTree = repo.Head.Tip.Tree; // Main Tree
+                            Tree parentCommitTree = repo.Head.Tip.Parents.Single().Tree; // Secondary Tree
+
+                            var patch = repo.Diff.Compare<Patch>(parentCommitTree, commitTree); // Difference
+
+                            foreach (var ptc in patch)
+                            {
+                                file file = new file();
+                                file.Name = Path.GetFileName(ptc.Path);
+                                file.State = ptc.Status;
+                                file.LastModified = DateTime.Now;
+                                files.Add(file);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        Directory.Delete(tempClonePath, true);
+                    }
+
+                    Directory.Delete(tempClonePath, true);
+                }
+
         List<List<string>> fPaths = new List<List<String>>();
 
 
