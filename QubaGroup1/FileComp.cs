@@ -7,8 +7,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 //using Octopus;
-using NUnit.Framework;
-using NUnit;
 
 namespace QubaGroup1
 {

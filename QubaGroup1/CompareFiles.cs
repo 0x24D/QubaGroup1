@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 //using LibGit2Sharp; //Allows us to read the beanstalk git files
 //using Octopus;
-using NUnit.Framework;
-using NUnit;
 
 namespace QubaGroup1
 {
