@@ -99,6 +99,8 @@ namespace QubaGroup1
                 }
 
         List<List<string>> fPaths = new List<List<String>>();
+
+
         public FileComp()
         {
         }
@@ -161,35 +163,40 @@ namespace QubaGroup1
 
 
 
-        private bool DirSearch(string sDir, string fileName)
+        public void DirSearch(string sDir, List<string> list)
         {
-            int dirCounter = 0; // to ensure all paths are sorted by directory, allowing easy comparing between different versions of files
             try
             {
                 foreach (string d in Directory.GetDirectories(sDir))
                 {
-                    fPaths.Add(new List<string>());
-
-                    foreach (string f in Directory.GetFiles(d, fileName))
+                    foreach (string f in Directory.GetFiles(d))
                     {
-                        fPaths[dirCounter].Add(f);
+                        list.Add(f);
                     }
-                    DirSearch(d, fileName);
-                    dirCounter++;
+                    DirSearch(d, list);
                 }
-
             }
-            catch
+            catch (System.Exception excpt)
             {
-                return false;
+                Console.WriteLine(excpt.Message);
             }
-            return true;
+        }
+
+        public  string checkMD5(string filename)
+        {
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(filename))
+                {
+                    return Encoding.Default.GetString(md5.ComputeHash(stream));
+                }
+            }
         }
 
 
 
 
-        public void cloneRepo(string Repos, string tempClonePath)
+        public void cloneRepo(string Repos, string tempClonePath,string oldPath)
         {
             string user = "mikepress88@gmail.com";
             string pass = "qubagroup1";
@@ -205,11 +212,11 @@ namespace QubaGroup1
                     
                 }
             }
-            catch 
+            catch (System.Exception excpt)
             {
-                Console.WriteLine("EX_NAME");
-        
+                Console.WriteLine(excpt.Message);
             }
         }
     }
+
 }
