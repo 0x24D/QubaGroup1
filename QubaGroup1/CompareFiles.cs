@@ -37,20 +37,6 @@ namespace QubaGroup1
         {
         }
 
-        private bool whichFileIsNewer(string f1, string f2)
-        {
-            FileInfo fi1 = new FileInfo(f1);
-            FileInfo fi2 = new FileInfo(f2);
-
-
-            if (fi1.CreationTimeUtc > fi2.CreationTimeUtc)
-                //file 1 is newer
-                return true;
-            else
-                //file 2 is newer
-                return false;
-        }
-
         //Might just have to checksum what we have and make a guess as to it being "up-to-date"
         //Or Perhaps if the server has rollback files stored locally, we could work with that.
 

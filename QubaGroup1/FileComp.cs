@@ -7,8 +7,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 //using Octopus;
-using NUnit.Framework;
-using NUnit;
 
 namespace QubaGroup1
 {
@@ -66,10 +64,12 @@ namespace QubaGroup1
                 }
                 while ((file1byte == file2byte) && (file1byte != -1));
 
+
+
                 fs1.Close();
                 fs2.Close();
 
-                return ((file1byte - file2byte) == 0);
+                return ((file1byte - file2byte) == 0); // will be true if files are identical
             }
         }
 
@@ -78,7 +78,7 @@ namespace QubaGroup1
 
         private bool DirSearch(string sDir, string fileName)
         {
-            int dirCounter = 0; // to ensure all paths are sorted by directory, allowing easy Indexing
+            int dirCounter = 0; // to ensure all paths are sorted by directory, allowing easy comparing between different versions of files
             try
             {
                 foreach (string d in Directory.GetDirectories(sDir))
@@ -90,8 +90,9 @@ namespace QubaGroup1
                         fPaths[dirCounter].Add(f);
                     }
                     DirSearch(d, fileName);
+                    dirCounter++;
                 }
-                dirCounter++;
+                
             }
             catch 
             {

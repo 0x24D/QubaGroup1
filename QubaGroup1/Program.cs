@@ -41,8 +41,14 @@ namespace QubaGroup1
             else
                 Console.WriteLine("MD5sums do not match");
 
-            Console.WriteLine(f.comparingFiles          (dir1,dir2)); // dir 1 is newer
-
+            if (f.whichFileIsNewer(dir1, dir2))
+            {
+                Console.WriteLine("File 1 is newer");
+            }
+            else
+            {
+                Console.WriteLine("File 2 is newer");
+            }
             Console.ReadLine();
         }
         
