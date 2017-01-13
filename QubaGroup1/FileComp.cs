@@ -7,12 +7,17 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 //using Octopus;
+using LibGit2Sharp;
+
 
 namespace QubaGroup1
 {
 
     public class FileComp
     {
+        List<List<string>> fPaths = new List<List<String>>();
+
+
         public FileComp()
         {
         }
@@ -63,11 +68,72 @@ namespace QubaGroup1
                 }
                 while ((file1byte == file2byte) && (file1byte != -1));
 
+
+
                 fs1.Close();
                 fs2.Close();
 
-                return ((file1byte - file2byte) == 0);
+                return ((file1byte - file2byte) == 0); // will be true if files are identical
+            }
+        }
+
+
+
+
+        public void DirSearch(string sDir, List<string> list)
+        {
+            try
+            {
+                foreach (string d in Directory.GetDirectories(sDir))
+                {
+                    foreach (string f in Directory.GetFiles(d))
+                    {
+                        list.Add(f);
+                    }
+                    DirSearch(d, list);
+                }
+            }
+            catch (System.Exception excpt)
+            {
+                Console.WriteLine(excpt.Message);
+            }
+        }
+
+        public string checkMD5(string filename)
+        {
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(filename))
+                {
+                    return Encoding.Default.GetString(md5.ComputeHash(stream));
+                }
+            }
+        }
+
+
+
+
+        public void cloneRepo(string Repos, string tempClonePath, string oldPath)
+        {
+            string user = "mikepress88@gmail.com";
+            string pass = "qubagroup1";
+
+            try
+            {
+                CloneOptions co = new CloneOptions();
+
+                co.CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials() { Username = user, Password = pass };
+
+                using (Repository repo = new Repository(Repository.Clone(Repos, tempClonePath, co)))
+                {
+
+                }
+            }
+            catch (System.Exception excpt)
+            {
+                Console.WriteLine(excpt.Message);
             }
         }
     }
+
 }

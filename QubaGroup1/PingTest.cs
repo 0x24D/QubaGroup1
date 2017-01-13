@@ -19,12 +19,13 @@ namespace QubaGroup1
                 request.Method = "HEAD";
                 using (var response = request.GetResponse())
                 {
-                   Console.WriteLine("Website up");   
+                   Console.WriteLine(url + " Website up");
+                   Console.WriteLine("");   
                 }
             }
             catch
             {
-               Console.WriteLine("Website down");
+               Console.WriteLine(url + " Website down");
             }
         }
     }
