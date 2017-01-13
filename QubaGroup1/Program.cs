@@ -46,7 +46,7 @@ namespace QubaGroup1
             string Repos = @"https://github.com/M1K3L08/QubaWebsiteG1.git";
 
 
-        //    f.cloneRepo(Repos, tempClonePath, dir2);
+           f.cloneRepo(Repos, tempClonePath, dir2);
 
 
 
